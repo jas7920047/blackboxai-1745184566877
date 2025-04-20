@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Step-by-Step Integration and Differentiation of f(x)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center p-6">
+  <header class="mb-8 text-center">
+    <h1 class="text-4xl font-bold text-gray-800 mb-2">Step-by-Step Integration and Differentiation of f(x)</h1>
+    <p class="text-gray-600 max-w-xl mx-auto">Enter a function f(x) to see its step-by-step integration or differentiation process along with the graph.</p>
+  </header>
+
+  <main class="w-full max-w-3xl bg-white rounded-lg shadow-md p-6">
+    <form id="calculationForm" class="mb-6">
+      <label for="functionInput" class="block text-gray-700 font-semibold mb-2">Function f(x):</label>
+      <input
+        type="text"
+        id="functionInput"
+        name="functionInput"
+        placeholder="e.g. 3x^2 + 2x - 5 or 4sin(x) - cos(x)"
+        class="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+        required
+      />
+      <div class="mt-4 flex space-x-4">
+        <button
+          type="submit"
+          name="operation"
+          value="integrate"
+          class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-blue-700 transition flex items-center justify-center flex-1"
+        >
+          <i class="fas fa-calculator mr-2"></i> Integrate
+        </button>
+        <button
+          type="submit"
+          name="operation"
+          value="differentiate"
+          class="bg-green-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-green-700 transition flex items-center justify-center flex-1"
+        >
+          <i class="fas fa-chart-line mr-2"></i> Differentiate
+        </button>
+      </div>
+    </form>
+
+    <section id="resultSection" class="text-gray-800">
+      <h2 class="text-2xl font-semibold mb-4">Steps:</h2>
+      <div id="stepsContainer" class="space-y-4"></div>
+    </section>
+  </main>
+
+  <canvas id="functionGraph" class="max-w-3xl w-full mt-6 rounded-lg shadow-md bg-white"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Simple parser and step-by-step integrator and differentiator for polynomial and trigonometric functions
+    // Supports terms like ax^n, ax, constants, and trig functions sin(x), cos(x), tan(x)
+    function parseFunction(input) {
+      // Normalize input: remove spaces, handle minus signs
+      input = input.replace(/\s+/g, '').replace(/-/g, '+-');
+      if (input[0] === '+') input = input.slice(1);
+      const terms = input.split('+').filter(Boolean);
+      return terms.map(term => {
+        // Check for trig functions
+        const trigMatch = term.match(/([+-]?\d*\.?\d*)?(sin|cos|tan)\(x\)/);
+        if (trigMatch) {
+          let coef = trigMatch[1];
+          coef = coef === '' || coef === '+' ? 1 : coef === '-' ? -1 : parseFloat(coef);
+          const func = trigMatch[2];
+          return { type: 'trig', coef, func };
+        }
+        // Polynomial term
+        let coef = 1;
+        let power = 0;
+        if (term.includes('x')) {
+          const parts = term.split('x');
+          coef = parts[0] === '' || parts[0] === '+' ? 1 : parts[0] === '-' ? -1 : parseFloat(parts[0]);
+          if (parts[1].startsWith('^')) {
+            power = parseInt(parts[1].slice(1));
+          } else {
+            power = 1;
+          }
+          return { type: 'poly', coef, power };
+        } else {
+          coef = parseFloat(term);
+          return { type: 'poly', coef, power: 0 };
+        }
+      });
+    }
+
+    function integrateTerm(term) {
+      if (term.type === 'poly') {
+        const newPower = term.power + 1;
+        const newCoef = term.coef / newPower;
+        return { type: 'poly', coef: newCoef, power: newPower };
+      } else if (term.type === 'trig') {
+        // Integration rules for trig functions
+        // ∫ sin(x) dx = -cos(x) + C
+        // ∫ cos(x) dx = sin(x) + C
+        // ∫ tan(x) dx = -ln|cos(x)| + C
+        return { type: 'trig', coef: term.coef, func: term.func };
+      }
+    }
+
+    function differentiateTerm(term) {
+      if (term.type === 'poly') {
+        if (term.power === 0) {
+          return { type: 'poly', coef: 0, power: 0 };
+        }
+        const newPower = term.power - 1;
+        const newCoef = term.coef * term.power;
+        return { type: 'poly', coef: newCoef, power: newPower };
+      } else if (term.type === 'trig') {
+        // Differentiation rules for trig functions
+        // d/dx sin(x) = cos(x)
+        // d/dx cos(x) = -sin(x)
+        // d/dx tan(x) = sec^2(x)
+        return { type: 'trig', coef: term.coef, func: term.func };
+      }
+    }
+
+    function formatTerm(term, operation = 'integrate') {
+      if (term.type === 'poly') {
+        const coefStr = term.coef.toFixed(3).replace(/\.?0+$/, '');
+        if (term.power === 0) return coefStr;
+        if (term.power === 1) return coefStr + 'x';
+        return coefStr + 'x^' + term.power;
+      } else if (term.type === 'trig') {
+        if (operation === 'integrate') {
+          if (term.func === 'sin') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * (-cos(x))`;
+          if (term.func === 'cos') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * sin(x)`;
+          if (term.func === 'tan') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * (-ln|cos(x)|)`;
+        } else if (operation === 'differentiate') {
+          if (term.func === 'sin') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * cos(x)`;
+          if (term.func === 'cos') return `${-term.coef.toFixed(3).replace(/\.?0+$/, '')} * sin(x)`;
+          if (term.func === 'tan') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * sec^2(x)`;
+        }
+        return '';
+      }
+      return '';
+    }
+
+    function generateSteps(terms, operation) {
+      const steps = [];
+      terms.forEach((term, index) => {
+        let step = '';
+        if (operation === 'integrate') {
+          const integrated = integrateTerm(term);
+          if (term.type === 'poly') {
+            step = `∫ ${formatTerm(term, 'integrate')} dx = ${formatTerm(integrated, 'integrate')} + C`;
+          } else if (term.type === 'trig') {
+            if (term.func === 'sin') {
+              step = `∫ ${term.coef}sin(x) dx = ${formatTerm(integrated, 'integrate')} + C`;
+            } else if (term.func === 'cos') {
+              step = `∫ ${term.coef}cos(x) dx = ${formatTerm(integrated, 'integrate')} + C`;
+            } else if (term.func === 'tan') {
+              step = `∫ ${term.coef}tan(x) dx = ${formatTerm(integrated, 'integrate')} + C`;
+            }
+          }
+        } else if (operation === 'differentiate') {
+          const differentiated = differentiateTerm(term);
+          if (term.type === 'poly') {
+            step = `d/dx ${formatTerm(term, 'differentiate')} = ${formatTerm(differentiated, 'differentiate')}`;
+          } else if (term.type === 'trig') {
+            if (term.func === 'sin') {
+              step = `d/dx ${term.coef}sin(x) = ${formatTerm(differentiated, 'differentiate')}`;
+            } else if (term.func === 'cos') {
+              step = `d/dx ${term.coef}cos(x) = ${formatTerm(differentiated, 'differentiate')}`;
+            } else if (term.func === 'tan') {
+              step = `d/dx ${term.coef}tan(x) = ${formatTerm(differentiated, 'differentiate')}`;
+            }
+          }
+        }
+        steps.push(step);
+      });
+      return steps;
+    }
+
+    function evaluateTerm(term, x) {
+      if (term.type === 'poly') {
+        return term.coef * Math.pow(x, term.power);
+      } else if (term.type === 'trig') {
+        if (term.func === 'sin') return term.coef * Math.sin(x);
+        if (term.func === 'cos') return term.coef * Math.cos(x);
+        if (term.func === 'tan') {
+          // Limit tan(x) values to avoid extreme spikes in graph
+          const val = Math.tan(x);
+          if (val > 10) return 10 * term.coef;
+          if (val < -10) return -10 * term.coef;
+          return term.coef * val;
+        }
+      }
+      return 0;
+    }
+
+    function evaluateFunction(terms, x) {
+      return terms.reduce((sum, term) => sum + evaluateTerm(term, x), 0);
+    }
+
+    let chart = null;
+
+    function plotFunction(terms) {
+      const ctx = document.getElementById('functionGraph').getContext('2d');
+      const labels = [];
+      const data = [];
+      for (let x = -10; x <= 10; x += 0.1) {
+        labels.push(x.toFixed(1));
+        data.push(evaluateFunction(terms, x));
+      }
+      if (chart) {
+        chart.destroy();
+      }
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'f(x)',
+            data: data,
+            borderColor: 'rgb(59, 130, 246)',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0,
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'x'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'f(x)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.getElementById('calculationForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const input = document.getElementById('functionInput').value;
+      const operation = e.submitter.value;
+      let terms;
+      try {
+        terms = parseFunction(input);
+      } catch {
+        alert('Invalid function format. Please enter a polynomial or trigonometric function like 3x^2 + 2x - 5 or 4sin(x) - cos(x).');
+        return;
+      }
+      const steps = generateSteps(terms, operation);
+      const container = document.getElementById('stepsContainer');
+      container.innerHTML = '';
+      steps.forEach(step => {
+        const p = document.createElement('p');
+        p.className = operation === 'integrate' ? 'bg-blue-50 border border-blue-200 rounded-md p-3 text-blue-800 font-mono' : 'bg-green-50 border border-green-200 rounded-md p-3 text-green-800 font-mono';
+        p.textContent = step;
+        container.appendChild(p);
+      });
+      plotFunction(terms);
+    });
+  </script>
+</body>
+</html>
