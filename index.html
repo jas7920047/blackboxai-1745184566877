@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Step-by-Step Integration and Differentiation of f(x)</title>
+  <title>Step-by-Step Integration and Differentiation of f(x) with Set Theory & Combinatorics</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -58,220 +58,402 @@
 
   <canvas id="functionGraph" class="max-w-3xl w-full mt-6 rounded-lg shadow-md bg-white"></canvas>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <div class="w-full max-w-3xl bg-white rounded-lg shadow-md p-6 mt-8">
+    <h2 class="text-3xl font-bold mb-4 text-center text-gray-800">Set Theory & Combinatorics</h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Set Operations</h3>
+        <label for="setA" class="block font-medium mb-1">Set A (comma separated):</label>
+        <input type="text" id="setA" placeholder="e.g. 1,2,3,4" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="setB" class="block font-medium mb-1">Set B (comma separated):</label>
+        <input type="text" id="setB" placeholder="e.g. 3,4,5,6" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <div class="flex space-x-4 mb-2">
+          <button id="unionBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition flex-1">Union</button>
+          <button id="intersectionBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition flex-1">Intersection</button>
+          <button id="cardinalityBtn" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition flex-1">Cardinality</button>
+        </div>
+        <div id="setResult" class="text-gray-800 font-mono whitespace-pre-wrap"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Permutations & Combinations</h3>
+        <label for="nValue" class="block font-medium mb-1">n (total items):</label>
+        <input type="number" id="nValue" min="0" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="rValue" class="block font-medium mb-1">r (items chosen):</label>
+        <input type="number" id="rValue" min="0" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <div class="flex space-x-4 mb-2">
+          <button id="permutationBtn" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition flex-1">Permutations</button>
+          <button id="combinationBtn" class="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition flex-1">Combinations</button>
+        </div>
+        <div id="permCombResult" class="text-gray-800 font-mono whitespace-pre-wrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full max-w-3xl bg-white rounded-lg shadow-md p-6 mt-8">
+    <h2 class="text-3xl font-bold mb-4 text-center text-gray-800">Probability & Statistics</h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Probability Basics</h3>
+        <label for="probEventA" class="block font-medium mb-1">P(A) (Probability of event A):</label>
+        <input type="number" id="probEventA" min="0" max="1" step="0.01" placeholder="e.g. 0.5" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="probEventB" class="block font-medium mb-1">P(B) (Probability of event B):</label>
+        <input type="number" id="probEventB" min="0" max="1" step="0.01" placeholder="e.g. 0.3" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="probEventAB" class="block font-medium mb-1">P(A ∩ B) (Probability of both A and B):</label>
+        <input type="number" id="probEventAB" min="0" max="1" step="0.01" placeholder="e.g. 0.1" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcProbBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full">Calculate P(A ∪ B)</button>
+        <div id="probResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Averages & Central Tendencies</h3>
+        <label for="dataSet" class="block font-medium mb-1">Data Set (comma separated numbers):</label>
+        <input type="text" id="dataSet" placeholder="e.g. 1,2,2,3,4,5" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcAvgBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition w-full">Calculate Mean, Median, Mode</button>
+        <div id="avgResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Dispersion</h3>
+        <button id="calcDispersionBtn" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition w-full">Calculate Variance & Standard Deviation</button>
+        <div id="dispersionResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full max-w-3xl bg-white rounded-lg shadow-md p-6 mt-8">
+    <h2 class="text-3xl font-bold mb-4 text-center text-gray-800">Coordinate Geometry</h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Cartesian Coordinates</h3>
+        <label for="pointX" class="block font-medium mb-1">Point X:</label>
+        <input type="number" id="pointX" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="pointY" class="block font-medium mb-1">Point Y:</label>
+        <input type="number" id="pointY" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcDistanceBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full">Calculate Distance from Origin</button>
+        <div id="distanceResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Line Equation</h3>
+        <label for="lineX1" class="block font-medium mb-1">Point 1 X:</label>
+        <input type="number" id="lineX1" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="lineY1" class="block font-medium mb-1">Point 1 Y:</label>
+        <input type="number" id="lineY1" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="lineX2" class="block font-medium mb-1">Point 2 X:</label>
+        <input type="number" id="lineX2" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="lineY2" class="block font-medium mb-1">Point 2 Y:</label>
+        <input type="number" id="lineY2" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcLineBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition w-full">Calculate Line Equation</button>
+        <div id="lineResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Circle</h3>
+        <label for="circleH" class="block font-medium mb-1">Center X (h):</label>
+        <input type="number" id="circleH" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="circleK" class="block font-medium mb-1">Center Y (k):</label>
+        <input type="number" id="circleK" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="circleR" class="block font-medium mb-1">Radius (r):</label>
+        <input type="number" id="circleR" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcCircleBtn" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition w-full">Calculate Circle Equation</button>
+        <div id="circleResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Parabola</h3>
+        <label for="parabolaA" class="block font-medium mb-1">Coefficient a:</label>
+        <input type="number" id="parabolaA" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="parabolaH" class="block font-medium mb-1">Vertex h:</label>
+        <input type="number" id="parabolaH" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="parabolaK" class="block font-medium mb-1">Vertex k:</label>
+        <input type="number" id="parabolaK" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcParabolaBtn" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition w-full">Calculate Parabola Equation</button>
+        <div id="parabolaResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Ellipse</h3>
+        <label for="ellipseH" class="block font-medium mb-1">Center h:</label>
+        <input type="number" id="ellipseH" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="ellipseK" class="block font-medium mb-1">Center k:</label>
+        <input type="number" id="ellipseK" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="ellipseA" class="block font-medium mb-1">Semi-major axis a:</label>
+        <input type="number" id="ellipseA" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="ellipseB" class="block font-medium mb-1">Semi-minor axis b:</label>
+        <input type="number" id="ellipseB" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcEllipseBtn" class="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition w-full">Calculate Ellipse Equation</button>
+        <div id="ellipseResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Hyperbola</h3>
+        <label for="hyperbolaH" class="block font-medium mb-1">Center h:</label>
+        <input type="number" id="hyperbolaH" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="hyperbolaK" class="block font-medium mb-1">Center k:</label>
+        <input type="number" id="hyperbolaK" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="hyperbolaA" class="block font-medium mb-1">Semi-major axis a:</label>
+        <input type="number" id="hyperbolaA" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="hyperbolaB" class="block font-medium mb-1">Semi-minor axis b:</label>
+        <input type="number" id="hyperbolaB" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcHyperbolaBtn" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition w-full">Calculate Hyperbola Equation</button>
+        <div id="hyperbolaResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full max-w-3xl bg-white rounded-lg shadow-md p-6 mt-8">
+    <h2 class="text-3xl font-bold mb-4 text-center text-gray-800">Advanced Calculus</h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Limits & Continuity</h3>
+        <label for="limitExpr" class="block font-medium mb-1">Function f(x):</label>
+        <input type="text" id="limitExpr" placeholder="e.g. (x^2 - 1)/(x - 1)" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="limitAt" class="block font-medium mb-1">Limit as x approaches:</label>
+        <input type="number" id="limitAt" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcLimitBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full">Calculate Limit</button>
+        <div id="limitResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Tangents & Normals</h3>
+        <label for="tangentExpr" class="block font-medium mb-1">Function f(x):</label>
+        <input type="text" id="tangentExpr" placeholder="e.g. x^2" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="tangentAt" class="block font-medium mb-1">At x =</label>
+        <input type="number" id="tangentAt" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcTangentBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition w-full">Calculate Tangent & Normal</button>
+        <div id="tangentResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Maxima & Minima</h3>
+        <label for="maxMinExpr" class="block font-medium mb-1">Function f(x):</label>
+        <input type="text" id="maxMinExpr" placeholder="e.g. x^3 - 3x^2 + 2" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcMaxMinBtn" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition w-full">Calculate Maxima & Minima</button>
+        <div id="maxMinResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Definite Integrals & Applications</h3>
+        <label for="defIntegralExpr" class="block font-medium mb-1">Function f(x):</label>
+        <input type="text" id="defIntegralExpr" placeholder="e.g. x^2" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="defIntegralA" class="block font-medium mb-1">Lower limit a:</label>
+        <input type="number" id="defIntegralA" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <label for="defIntegralB" class="block font-medium mb-1">Upper limit b:</label>
+        <input type="number" id="defIntegralB" step="any" class="w-full border border-gray-300 rounded-md p-2 mb-2" />
+        <button id="calcDefIntegralBtn" class="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition w-full">Calculate Definite Integral</button>
+        <div id="defIntegralResult" class="text-gray-800 font-mono whitespace-pre-wrap mt-2"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Simple parser and step-by-step integrator and differentiator for polynomial and trigonometric functions
-    // Supports terms like ax^n, ax, constants, and trig functions sin(x), cos(x), tan(x)
-    function parseFunction(input) {
-      // Normalize input: remove spaces, handle minus signs
-      input = input.replace(/\s+/g, '').replace(/-/g, '+-');
-      if (input[0] === '+') input = input.slice(1);
-      const terms = input.split('+').filter(Boolean);
-      return terms.map(term => {
-        // Check for trig functions
-        const trigMatch = term.match(/([+-]?\d*\.?\d*)?(sin|cos|tan)\(x\)/);
-        if (trigMatch) {
-          let coef = trigMatch[1];
-          coef = coef === '' || coef === '+' ? 1 : coef === '-' ? -1 : parseFloat(coef);
-          const func = trigMatch[2];
-          return { type: 'trig', coef, func };
-        }
-        // Polynomial term
-        let coef = 1;
-        let power = 0;
-        if (term.includes('x')) {
-          const parts = term.split('x');
-          coef = parts[0] === '' || parts[0] === '+' ? 1 : parts[0] === '-' ? -1 : parseFloat(parts[0]);
-          if (parts[1].startsWith('^')) {
-            power = parseInt(parts[1].slice(1));
-          } else {
-            power = 1;
-          }
-          return { type: 'poly', coef, power };
-        } else {
-          coef = parseFloat(term);
-          return { type: 'poly', coef, power: 0 };
-        }
-      });
-    }
+    // Coordinate Geometry functions
 
-    function integrateTerm(term) {
-      if (term.type === 'poly') {
-        const newPower = term.power + 1;
-        const newCoef = term.coef / newPower;
-        return { type: 'poly', coef: newCoef, power: newPower };
-      } else if (term.type === 'trig') {
-        // Integration rules for trig functions
-        // ∫ sin(x) dx = -cos(x) + C
-        // ∫ cos(x) dx = sin(x) + C
-        // ∫ tan(x) dx = -ln|cos(x)| + C
-        return { type: 'trig', coef: term.coef, func: term.func };
-      }
-    }
-
-    function differentiateTerm(term) {
-      if (term.type === 'poly') {
-        if (term.power === 0) {
-          return { type: 'poly', coef: 0, power: 0 };
-        }
-        const newPower = term.power - 1;
-        const newCoef = term.coef * term.power;
-        return { type: 'poly', coef: newCoef, power: newPower };
-      } else if (term.type === 'trig') {
-        // Differentiation rules for trig functions
-        // d/dx sin(x) = cos(x)
-        // d/dx cos(x) = -sin(x)
-        // d/dx tan(x) = sec^2(x)
-        return { type: 'trig', coef: term.coef, func: term.func };
-      }
-    }
-
-    function formatTerm(term, operation = 'integrate') {
-      if (term.type === 'poly') {
-        const coefStr = term.coef.toFixed(3).replace(/\.?0+$/, '');
-        if (term.power === 0) return coefStr;
-        if (term.power === 1) return coefStr + 'x';
-        return coefStr + 'x^' + term.power;
-      } else if (term.type === 'trig') {
-        if (operation === 'integrate') {
-          if (term.func === 'sin') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * (-cos(x))`;
-          if (term.func === 'cos') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * sin(x)`;
-          if (term.func === 'tan') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * (-ln|cos(x)|)`;
-        } else if (operation === 'differentiate') {
-          if (term.func === 'sin') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * cos(x)`;
-          if (term.func === 'cos') return `${-term.coef.toFixed(3).replace(/\.?0+$/, '')} * sin(x)`;
-          if (term.func === 'tan') return `${term.coef.toFixed(3).replace(/\.?0+$/, '')} * sec^2(x)`;
-        }
-        return '';
-      }
-      return '';
-    }
-
-    function generateSteps(terms, operation) {
-      const steps = [];
-      terms.forEach((term, index) => {
-        let step = '';
-        if (operation === 'integrate') {
-          const integrated = integrateTerm(term);
-          if (term.type === 'poly') {
-            step = `∫ ${formatTerm(term, 'integrate')} dx = ${formatTerm(integrated, 'integrate')} + C`;
-          } else if (term.type === 'trig') {
-            if (term.func === 'sin') {
-              step = `∫ ${term.coef}sin(x) dx = ${formatTerm(integrated, 'integrate')} + C`;
-            } else if (term.func === 'cos') {
-              step = `∫ ${term.coef}cos(x) dx = ${formatTerm(integrated, 'integrate')} + C`;
-            } else if (term.func === 'tan') {
-              step = `∫ ${term.coef}tan(x) dx = ${formatTerm(integrated, 'integrate')} + C`;
-            }
-          }
-        } else if (operation === 'differentiate') {
-          const differentiated = differentiateTerm(term);
-          if (term.type === 'poly') {
-            step = `d/dx ${formatTerm(term, 'differentiate')} = ${formatTerm(differentiated, 'differentiate')}`;
-          } else if (term.type === 'trig') {
-            if (term.func === 'sin') {
-              step = `d/dx ${term.coef}sin(x) = ${formatTerm(differentiated, 'differentiate')}`;
-            } else if (term.func === 'cos') {
-              step = `d/dx ${term.coef}cos(x) = ${formatTerm(differentiated, 'differentiate')}`;
-            } else if (term.func === 'tan') {
-              step = `d/dx ${term.coef}tan(x) = ${formatTerm(differentiated, 'differentiate')}`;
-            }
-          }
-        }
-        steps.push(step);
-      });
-      return steps;
-    }
-
-    function evaluateTerm(term, x) {
-      if (term.type === 'poly') {
-        return term.coef * Math.pow(x, term.power);
-      } else if (term.type === 'trig') {
-        if (term.func === 'sin') return term.coef * Math.sin(x);
-        if (term.func === 'cos') return term.coef * Math.cos(x);
-        if (term.func === 'tan') {
-          // Limit tan(x) values to avoid extreme spikes in graph
-          const val = Math.tan(x);
-          if (val > 10) return 10 * term.coef;
-          if (val < -10) return -10 * term.coef;
-          return term.coef * val;
-        }
-      }
-      return 0;
-    }
-
-    function evaluateFunction(terms, x) {
-      return terms.reduce((sum, term) => sum + evaluateTerm(term, x), 0);
-    }
-
-    let chart = null;
-
-    function plotFunction(terms) {
-      const ctx = document.getElementById('functionGraph').getContext('2d');
-      const labels = [];
-      const data = [];
-      for (let x = -10; x <= 10; x += 0.1) {
-        labels.push(x.toFixed(1));
-        data.push(evaluateFunction(terms, x));
-      }
-      if (chart) {
-        chart.destroy();
-      }
-      chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'f(x)',
-            data: data,
-            borderColor: 'rgb(59, 130, 246)',
-            backgroundColor: 'rgba(59, 130, 246, 0.2)',
-            fill: true,
-            tension: 0.3,
-            pointRadius: 0,
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'x'
-              }
-            },
-            y: {
-              title: {
-                display: true,
-                text: 'f(x)'
-              }
-            }
-          }
-        }
-      });
-    }
-
-    document.getElementById('calculationForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const input = document.getElementById('functionInput').value;
-      const operation = e.submitter.value;
-      let terms;
-      try {
-        terms = parseFunction(input);
-      } catch {
-        alert('Invalid function format. Please enter a polynomial or trigonometric function like 3x^2 + 2x - 5 or 4sin(x) - cos(x).');
+    // Calculate distance from origin
+    document.getElementById('calcDistanceBtn').addEventListener('click', () => {
+      const x = parseFloat(document.getElementById('pointX').value);
+      const y = parseFloat(document.getElementById('pointY').value);
+      if (isNaN(x) || isNaN(y)) {
+        alert('Please enter valid numbers for X and Y.');
         return;
       }
-      const steps = generateSteps(terms, operation);
-      const container = document.getElementById('stepsContainer');
-      container.innerHTML = '';
-      steps.forEach(step => {
-        const p = document.createElement('p');
-        p.className = operation === 'integrate' ? 'bg-blue-50 border border-blue-200 rounded-md p-3 text-blue-800 font-mono' : 'bg-green-50 border border-green-200 rounded-md p-3 text-green-800 font-mono';
-        p.textContent = step;
-        container.appendChild(p);
-      });
-      plotFunction(terms);
+      const distance = Math.sqrt(x * x + y * y);
+      document.getElementById('distanceResult').textContent = `Distance from origin: ${distance.toFixed(4)}`;
+    });
+
+    // Calculate line equation from two points
+    document.getElementById('calcLineBtn').addEventListener('click', () => {
+      const x1 = parseFloat(document.getElementById('lineX1').value);
+      const y1 = parseFloat(document.getElementById('lineY1').value);
+      const x2 = parseFloat(document.getElementById('lineX2').value);
+      const y2 = parseFloat(document.getElementById('lineY2').value);
+      if ([x1, y1, x2, y2].some(v => isNaN(v))) {
+        alert('Please enter valid numbers for all points.');
+        return;
+      }
+      if (x1 === x2) {
+        document.getElementById('lineResult').textContent = `Line equation: x = ${x1.toFixed(4)}`;
+        return;
+      }
+      const m = (y2 - y1) / (x2 - x1);
+      const c = y1 - m * x1;
+      document.getElementById('lineResult').textContent = `Line equation: y = ${m.toFixed(4)}x + ${c.toFixed(4)}`;
+    });
+
+    // Calculate circle equation
+    document.getElementById('calcCircleBtn').addEventListener('click', () => {
+      const h = parseFloat(document.getElementById('circleH').value);
+      const k = parseFloat(document.getElementById('circleK').value);
+      const r = parseFloat(document.getElementById('circleR').value);
+      if ([h, k, r].some(v => isNaN(v) || r <= 0)) {
+        alert('Please enter valid numbers for center and positive radius.');
+        return;
+      }
+      document.getElementById('circleResult').textContent = `Circle equation: (x - ${h.toFixed(4)})² + (y - ${k.toFixed(4)})² = ${r.toFixed(4)}²`;
+    });
+
+    // Calculate parabola equation
+    document.getElementById('calcParabolaBtn').addEventListener('click', () => {
+      const a = parseFloat(document.getElementById('parabolaA').value);
+      const h = parseFloat(document.getElementById('parabolaH').value);
+      const k = parseFloat(document.getElementById('parabolaK').value);
+      if ([a, h, k].some(v => isNaN(v) || a === 0)) {
+        alert('Please enter valid numbers and non-zero a.');
+        return;
+      }
+      document.getElementById('parabolaResult').textContent = `Parabola equation: y = ${a.toFixed(4)}(x - ${h.toFixed(4)})² + ${k.toFixed(4)}`;
+    });
+
+    // Calculate ellipse equation
+    document.getElementById('calcEllipseBtn').addEventListener('click', () => {
+      const h = parseFloat(document.getElementById('ellipseH').value);
+      const k = parseFloat(document.getElementById('ellipseK').value);
+      const a = parseFloat(document.getElementById('ellipseA').value);
+      const b = parseFloat(document.getElementById('ellipseB').value);
+      if ([h, k, a, b].some(v => isNaN(v) || a <= 0 || b <= 0)) {
+        alert('Please enter valid numbers and positive a, b.');
+        return;
+      }
+      document.getElementById('ellipseResult').textContent = `Ellipse equation: ((x - ${h.toFixed(4)})² / ${a.toFixed(4)}²) + ((y - ${k.toFixed(4)})² / ${b.toFixed(4)}²) = 1`;
+    });
+
+    // Calculate hyperbola equation
+    document.getElementById('calcHyperbolaBtn').addEventListener('click', () => {
+      const h = parseFloat(document.getElementById('hyperbolaH').value);
+      const k = parseFloat(document.getElementById('hyperbolaK').value);
+      const a = parseFloat(document.getElementById('hyperbolaA').value);
+      const b = parseFloat(document.getElementById('hyperbolaB').value);
+      if ([h, k, a, b].some(v => isNaN(v) || a <= 0 || b <= 0)) {
+        alert('Please enter valid numbers and positive a, b.');
+        return;
+      }
+      document.getElementById('hyperbolaResult').textContent = `Hyperbola equation: ((x - ${h.toFixed(4)})² / ${a.toFixed(4)}²) - ((y - ${k.toFixed(4)})² / ${b.toFixed(4)}²) = 1`;
+    });
+
+    // Advanced Calculus functions
+
+    // Calculate limit (simple numeric approach)
+    document.getElementById('calcLimitBtn').addEventListener('click', () => {
+      const expr = document.getElementById('limitExpr').value;
+      const xVal = parseFloat(document.getElementById('limitAt').value);
+      if (isNaN(xVal)) {
+        alert('Please enter a valid number for x.');
+        return;
+      }
+      try {
+        // Replace x with values close to xVal and evaluate
+        function evaluateAt(x) {
+          const replaced = expr.replace(/x/g, `(${x})`);
+          return Function('"use strict";return (' + replaced + ')')();
+        }
+        const left = evaluateAt(xVal - 0.0001);
+        const right = evaluateAt(xVal + 0.0001);
+        if (Math.abs(left - right) < 0.001) {
+          document.getElementById('limitResult').textContent = `Limit as x→${xVal} is approximately ${((left + right) / 2).toFixed(4)}`;
+        } else {
+          document.getElementById('limitResult').textContent = `Limit does not exist (left and right limits differ).`;
+        }
+      } catch {
+        document.getElementById('limitResult').textContent = 'Invalid function expression.';
+      }
+    });
+
+    // Calculate tangent and normal lines
+    document.getElementById('calcTangentBtn').addEventListener('click', () => {
+      const expr = document.getElementById('tangentExpr').value;
+      const xVal = parseFloat(document.getElementById('tangentAt').value);
+      if (isNaN(xVal)) {
+        alert('Please enter a valid number for x.');
+        return;
+      }
+      try {
+        function evaluateAt(x) {
+          const replaced = expr.replace(/x/g, `(${x})`);
+          return Function('"use strict";return (' + replaced + ')')();
+        }
+        function derivativeAt(x, h = 0.0001) {
+          return (evaluateAt(x + h) - evaluateAt(x - h)) / (2 * h);
+        }
+        const yVal = evaluateAt(xVal);
+        const slope = derivativeAt(xVal);
+        const tangent = `y = ${slope.toFixed(4)}(x - ${xVal}) + ${yVal.toFixed(4)}`;
+        const normalSlope = slope === 0 ? 'undefined' : (-1 / slope).toFixed(4);
+        const normal = slope === 0 ? 'Normal line is vertical' : `y = ${normalSlope}(x - ${xVal}) + ${yVal.toFixed(4)}`;
+        document.getElementById('tangentResult').textContent = `Tangent line: ${tangent}\nNormal line: ${normal}`;
+      } catch {
+        document.getElementById('tangentResult').textContent = 'Invalid function expression.';
+      }
+    });
+
+    // Calculate maxima and minima (using derivative test)
+    document.getElementById('calcMaxMinBtn').addEventListener('click', () => {
+      const expr = document.getElementById('maxMinExpr').value;
+      try {
+        function evaluateAt(x) {
+          const replaced = expr.replace(/x/g, `(${x})`);
+          return Function('"use strict";return (' + replaced + ')')();
+        }
+        function derivativeAt(x, h = 0.0001) {
+          return (evaluateAt(x + h) - evaluateAt(x - h)) / (2 * h);
+        }
+        function secondDerivativeAt(x, h = 0.0001) {
+          return (derivativeAt(x + h) - derivativeAt(x - h)) / (2 * h);
+        }
+        // Find critical points by scanning range -10 to 10
+        const criticalPoints = [];
+        for (let x = -10; x <= 10; x += 0.1) {
+          if (Math.abs(derivativeAt(x)) < 0.01) {
+            criticalPoints.push(x);
+          }
+        }
+        if (criticalPoints.length === 0) {
+          document.getElementById('maxMinResult').textContent = 'No critical points found in range -10 to 10.';
+          return;
+        }
+        let resultText = '';
+        criticalPoints.forEach(x => {
+          const y = evaluateAt(x);
+          const secondDeriv = secondDerivativeAt(x);
+          if (secondDeriv > 0) {
+            resultText += `Local minimum at x=${x.toFixed(2)}, y=${y.toFixed(4)}\n`;
+          } else if (secondDeriv < 0) {
+            resultText += `Local maximum at x=${x.toFixed(2)}, y=${y.toFixed(4)}\n`;
+          } else {
+            resultText += `Point of inflection at x=${x.toFixed(2)}, y=${y.toFixed(4)}\n`;
+          }
+        });
+        document.getElementById('maxMinResult').textContent = resultText;
+      } catch {
+        document.getElementById('maxMinResult').textContent = 'Invalid function expression.';
+      }
+    });
+
+    // Calculate definite integral using trapezoidal rule
+    document.getElementById('calcDefIntegralBtn').addEventListener('click', () => {
+      const expr = document.getElementById('defIntegralExpr').value;
+      const a = parseFloat(document.getElementById('defIntegralA').value);
+      const b = parseFloat(document.getElementById('defIntegralB').value);
+      if (isNaN(a) || isNaN(b) || a >= b) {
+        alert('Please enter valid limits with a < b.');
+        return;
+      }
+      try {
+        function evaluateAt(x) {
+          const replaced = expr.replace(/x/g, `(${x})`);
+          return Function('"use strict";return (' + replaced + ')')();
+        }
+        const n = 1000; // number of trapezoids
+        const h = (b - a) / n;
+        let sum = (evaluateAt(a) + evaluateAt(b)) / 2;
+        for (let i = 1; i < n; i++) {
+          sum += evaluateAt(a + i * h);
+        }
+        const integral = sum * h;
+        document.getElementById('defIntegralResult').textContent = `Definite integral from ${a} to ${b} is approximately ${integral.toFixed(4)}`;
+      } catch {
+        document.getElementById('defIntegralResult').textContent = 'Invalid function expression.';
+      }
     });
   </script>
 </body>
